@@ -1,13 +1,15 @@
 package com.example.test1;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 public class MainActivity extends AppCompatActivity {
 
     private TextView timerTextView;
@@ -34,9 +36,32 @@ public class MainActivity extends AppCompatActivity {
         tatTapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               aThousand--;
-               aThousand = aThousand - 1;
+                aThousand--;
+                // aThousand = aThousand - 1;
+                aThousandTextView.setText(aThousand + "");
 
+                if (remainingTime > 0 && aThousand <= 0) {
+                   Toast.makeText(MainActivity.this, "Congratulations", Toast.LENGTH_SHORT).show();
+                    AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this)
+                            .setTitle(R.string.alert_title)
+                            .setMessage(R.string.alert_message)
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    //set what would happen when positive button is clicked
+                                    finish();
+                                }
+                            })
+
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    //set what should happen when negative button is clicked
+                                    Toast.makeText(getApplicationContext(),"Nothing Happened",Toast.LENGTH_LONG).show();
+                                }
+                            })
+                            .show();
+                }
             }
         });
         countDownTimer = new CountDownTimer(initialCountDownInMillis, timerInterval) {
@@ -54,5 +79,9 @@ public class MainActivity extends AppCompatActivity {
         countDownTimer.start();
 
 
+    }
+
+    private void resetTheGame(){
+        
     }
 }
