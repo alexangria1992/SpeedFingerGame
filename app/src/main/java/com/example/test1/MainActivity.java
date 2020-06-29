@@ -3,6 +3,8 @@ package com.example.test1;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -21,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private long initialCountDownInMillis = 60000;
     private int timerInterval = 1000;
     private int remainingTime = 60;
-    private int aThousand = 10;
+    private int aThousand = 1000;
 
     private final String REMAINING_TIME_KEY = "remaining time key";
     private final String A_THOUSAND_KEY = "A thousand key";
@@ -29,13 +31,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        showToast("On destroy Method is Called");
+        showToast("On destroy Method is Called", Toast.LENGTH_SHORT);
     }
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        showToast("On Save Instance Is Called");
+        showToast("On Save Instance Is Called", Toast.LENGTH_SHORT);
         outState.putInt(REMAINING_TIME_KEY, remainingTime);
         outState.putInt(A_THOUSAND_KEY, aThousand);
         countDownTimer.cancel();
@@ -47,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        showToast("On Ceate Method is called");
+        showToast("On Ceate Method is called", Toast.LENGTH_SHORT);
 
         timerTextView = findViewById(R.id.txtTimer);
         aThousandTextView = findViewById(R.id.txtAThousand);
@@ -164,7 +166,22 @@ public class MainActivity extends AppCompatActivity {
         alertDialog.setCancelable(false);
     }
 
-    private void showToast(String message){
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    private void showToast(String message, int duration){
+        Toast.makeText(this, message, duration).show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu );
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+       if(item.getItemId() == R.id.info_item){
+           showToast("This is the Current version of your game. Check Google Play and Make sure that you're playing latest version of game" + BuildConfig.VERSION_NAME, Toast.LENGTH_LONG);
+       }
+       return true;
     }
 }
